@@ -732,43 +732,44 @@ musicBtn.addEventListener('click', ()=>{
 
 
 
-
-
-
 /* ---------------- DEFILEMENT AUTOMATIQUE ---------------- */
-(function(){
-  let autoScrollActive = false;
-  let rafId = null;
-  const speed = 0.7;
+(function () {
 
-  function stepScroll(){
-    if(!autoScrollActive) return;
-    window.scrollBy(0, speed);
-    const doc = document.documentElement;
-    const maxScroll = doc.scrollHeight - doc.clientHeight;
-    const current = window.scrollY || doc.scrollTop || document.body.scrollTop;
-    if(current >= maxScroll - 2){
-      autoScrollActive = false;
-      return;
+    let autoScroll = null;
+
+    function startAutoScroll() {
+
+        if (autoScroll) clearInterval(autoScroll);
+
+        autoScroll = setInterval(() => {
+
+            window.scrollBy({
+                top: 1,
+                left: 0,
+                behavior: "auto"
+            });
+
+            if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+                clearInterval(autoScroll);
+            }
+
+        }, 12);
+
     }
-    rafId = requestAnimationFrame(stepScroll);
-  }
 
-  function stopAutoScroll(){
-    autoScrollActive = false;
-    if(rafId) cancelAnimationFrame(rafId);
-  }
+    function stopAutoScroll() {
+        if (autoScroll) {
+            clearInterval(autoScroll);
+        }
+    }
 
-  function startAutoScroll(){
-    autoScrollActive = true;
-    stepScroll();
-  }
+    window.addEventListener("wheel", stopAutoScroll, { passive: true });
+    window.addEventListener("touchstart", stopAutoScroll, { passive: true });
+    window.addEventListener("mousedown", stopAutoScroll, { passive: true });
+    window.addEventListener("keydown", stopAutoScroll, { passive: true });
 
-  ['wheel','touchstart','keydown','mousedown'].forEach(evt=>{
-    window.addEventListener(evt, stopAutoScroll, {passive:true});
-  });
+    window.__startAutoScroll = startAutoScroll;
 
-  window.__startAutoScroll = startAutoScroll;
 })();
 
 /* ---------------- COUNTDOWN ---------------- */
