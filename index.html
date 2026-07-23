@@ -679,32 +679,61 @@ function playKnockSound(){
   });
 })();
 
-/* ---------------- MUSIC TOGGLE ---------------- */
+
+
+
 const bgm = document.getElementById('bgm');
 const musicBtn = document.getElementById('music-toggle');
 let musicStarted = false;
 
+// Start at 1 minute 28 seconds
+bgm.addEventListener('loadedmetadata', () => {
+    bgm.currentTime = 88;
+});
+
 function tryStartMusic(){
-  if(musicStarted) return;
-  bgm.volume = 0.6;
-  const p = bgm.play();
-  if(p !== undefined){
-    p.then(()=>{
-      musicStarted = true;
-      musicBtn.classList.add('playing');
-    }).catch(()=>{ /* autoplay bloqué, on attend un clic explicite sur le bouton */ });
-  }
+    if(musicStarted) return;
+
+    bgm.volume = 0.6;
+
+    // Make sure it starts at 1:28
+    if (bgm.currentTime < 88) {
+        bgm.currentTime = 88;
+    }
+
+    const p = bgm.play();
+
+    if(p !== undefined){
+        p.then(()=>{
+            musicStarted = true;
+            musicBtn.classList.add('playing');
+        }).catch(()=>{
+            // Autoplay blocked
+        });
+    }
 }
 
 musicBtn.addEventListener('click', ()=>{
-  if(bgm.paused){
-    bgm.play();
-    musicBtn.classList.add('playing');
-  } else {
-    bgm.pause();
-    musicBtn.classList.remove('playing');
-  }
+    if(bgm.paused){
+        if (bgm.currentTime < 88) {
+            bgm.currentTime = 88;
+        }
+        bgm.play();
+        musicBtn.classList.add('playing');
+    } else {
+        bgm.pause();
+        musicBtn.classList.remove('playing');
+    }
 });
+
+
+
+
+
+
+
+
+
 
 /* ---------------- DEFILEMENT AUTOMATIQUE ---------------- */
 (function(){
