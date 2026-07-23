@@ -757,11 +757,28 @@ musicBtn.addEventListener('click', ()=>{
 
     }
 
+    // function stopAutoScroll() {
+    //     if (autoScroll) {
+    //         clearInterval(autoScroll);
+    //     }
+    // }
     function stopAutoScroll() {
-        if (autoScroll) {
-            clearInterval(autoScroll);
-        }
+    if (!autoScroll) return;
+
+    document.documentElement.scrollTop += 1.2;
+    document.body.scrollTop += 1.2;
+
+    const max =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+
+    if (window.pageYOffset >= max) {
+        autoScroll = false;
+        return;
     }
+
+    requestAnimationFrame(stepScroll);
+}
 
     window.addEventListener("wheel", stopAutoScroll, { passive: true });
     window.addEventListener("touchstart", stopAutoScroll, { passive: true });
