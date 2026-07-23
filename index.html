@@ -396,7 +396,7 @@ footer .script{display:block; font-size:1.8rem; color:var(--rose-deep); letter-s
   </button>
   <audio id="bgm" loop preload="none">
     <!-- Remplacer par votre fichier audio local (mp3). Un lien YouTube ne peut pas être lu directement ici. -->
-    <source src="assets/music.mp4" type="audio/mpeg">
+    <source src="assets/music.mp3" type="audio/mpeg">
   </audio>
 
   <!-- HERO -->
@@ -537,7 +537,8 @@ footer .script{display:block; font-size:1.8rem; color:var(--rose-deep); letter-s
         </div>
       </article>
 
-    
+     
+
       <!-- JOUR 3 : MARIAGE -->
       <article class="day-card day-card--rose" id="day3">
         <svg class="orn-corner tl" viewBox="0 0 90 90" style="width:36px;height:36px;top:8px;left:8px;color:var(--rose-deep);stroke:var(--rose-deep);"><use href="#orn-corner"/></svg>
@@ -577,7 +578,7 @@ footer .script{display:block; font-size:1.8rem; color:var(--rose-deep); letter-s
   <footer>
     <span class="script">Mohamed &amp; Riheb</span>
     8 Août 2026 — Avec amour
-    <p class="dev-credit">Développé par Aya Attia — <a href="https://www.linkedin.com/in/ayaattia0" target="_blank" rel="noopener">LinkedIn</a></p>
+    <p class="dev-credit">Développé par Aya Attia — <a href="https://www.linkedin.com/in/aya-attia" target="_blank" rel="noopener">LinkedIn</a></p>
   </footer>
 
 </div>
@@ -714,8 +715,10 @@ musicBtn.addEventListener('click', ()=>{
   function stepScroll(){
     if(!autoScrollActive) return;
     window.scrollBy(0, speed);
-    const atBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 2);
-    if(atBottom){
+    const doc = document.documentElement;
+    const maxScroll = doc.scrollHeight - doc.clientHeight;
+    const current = window.scrollY || doc.scrollTop || document.body.scrollTop;
+    if(current >= maxScroll - 2){
       autoScrollActive = false;
       return;
     }
